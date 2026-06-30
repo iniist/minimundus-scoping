@@ -107,11 +107,11 @@
   .body{display:none;padding:2px 16px 14px;border-top:1px solid var(--line)}
   .card.open .body{display:block}
   /* ---------- Items ---------- */
+  .qitem{border-bottom:1px solid var(--line)}
+  .qitem:last-of-type{border-bottom:0}
   .item{
-    display:flex;gap:12px;align-items:flex-start;padding:11px 0;
-    border-bottom:1px solid var(--line);cursor:pointer;
+    display:flex;gap:12px;align-items:flex-start;padding:11px 0 8px;cursor:pointer;
   }
-  .item:last-of-type{border-bottom:0}
   .box{
     flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
     background:var(--surface);position:relative;transition:.15s;margin-top:1px;
@@ -122,7 +122,15 @@
     transition:transform .15s}
   .item.done .box::after{transform:rotate(45deg) scale(1)}
   .item .txt{font-size:14.5px;padding-top:1px}
-  .item.done .txt{color:var(--ink-soft);text-decoration:line-through}
+  .item.done .txt{color:var(--ink-soft)}
+  .answer{padding:0 0 12px 36px}
+  .ans-input{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);
+    color:var(--ink);font-family:inherit;font-size:14px;padding:8px 11px}
+  .ans-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .yn{display:inline-flex;gap:7px}
+  .yn button{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);
+    font-family:inherit;font-size:13px;font-weight:600;padding:6px 18px;border-radius:8px;cursor:pointer;transition:.12s}
+  .yn button.sel{background:var(--go);border-color:var(--go);color:#fff}
   .home{display:inline-block;font-size:10px;font-weight:600;color:var(--go);
     background:var(--go-soft);padding:1px 7px;border-radius:99px;margin-left:6px;
     vertical-align:middle;text-decoration:none}
@@ -199,29 +207,29 @@
 const DATA = [
   { id:"trickfilm", name:"Trickfilm-Station", sub:"Kinder erstellen eigenen Film", icon:"🎬",
     items:[
-      ["t1","Stop-Motion oder gezeichnet?"],
-      ["t2","Ausgabe: QR / E-Mail / Download?"],
-      ["t3","Dauer pro Session → Durchsatz?"],
-      ["t4","Mehrsprachig nötig?"],
-      ["t5","Kindersicher / robust gebaut?"],
-      ["t6","KI-Produktion des Films angedacht?"],
+      ["t1","Stop-Motion oder gezeichnet?","open"],
+      ["t2","Ausgabe: QR / E-Mail / Download?","open"],
+      ["t3","Dauer pro Session → Durchsatz?","open"],
+      ["t4","Mehrsprachig nötig?","yn"],
+      ["t5","Kindersicher / robust gebaut?","yn"],
+      ["t6","KI-Produktion des Films angedacht?","yn"],
     ]},
   { id:"selfie", name:"Selfie-Station", sub:"Unser Heimspiel", icon:"🤳", home:true,
     items:[
-      ["s1","Druck oder nur digital?"],
-      ["s2","Greenscreen / Minimundus-Szene als Hintergrund?"],
-      ["s3","Datenschutz Kinderfotos (DSGVO) – wie geregelt?"],
-      ["s4","Branding / Rahmen-Design?"],
-      ["s5","Bestehende Lösung von uns wiederverwendbar?"],
-      ["s6","Münzzahlung oder auch per Karte?"],
+      ["s1","Druck oder nur digital?","open"],
+      ["s2","Greenscreen / Minimundus-Szene als Hintergrund?","yn"],
+      ["s3","Datenschutz Kinderfotos (DSGVO) – wie geregelt?","open"],
+      ["s4","Branding / Rahmen-Design?","open"],
+      ["s5","Bestehende Lösung von uns wiederverwendbar?","yn"],
+      ["s6","Münzzahlung oder auch per Karte?","open"],
     ]},
   { id:"fussball", name:"Fußballwand", sub:"Speed oder Treffer", icon:"⚽",
     items:[
-      ["f1","Speed-Messung oder Trefferzonen?"],
-      ["f3","Highscore / Bestenliste gewünscht?"],
-      ["f4","Platzbedarf vor Ort? Sicherheitsabstand / Netz nötig?"],
-      ["f5","Bestehende Lösung erweitern oder neu bauen?"],
-      ["f6","Demontieren und bei uns bauen – wie gedacht?"],
+      ["f1","Speed-Messung oder Trefferzonen?","open"],
+      ["f3","Highscore / Bestenliste gewünscht?","yn"],
+      ["f4","Platzbedarf vor Ort? Sicherheitsabstand / Netz nötig?","open"],
+      ["f5","Bestehende Lösung erweitern oder neu bauen?","open"],
+      ["f6","Demontieren und bei uns bauen – wie gedacht?","yn"],
     ]},
   { id:"d3", name:"3D-Station", sub:"Blackbox – nur dokumentieren", icon:"📐",
     items:[
@@ -230,24 +238,24 @@ const DATA = [
     ]},
   { id:"quer", name:"Über alle Stationen", sub:"PM-Standard", icon:"🔧",
     items:[
-      ["q1","Budget-Rahmen?"],
-      ["q2","Deadline / Wunschtermin?"],
-      ["q3","Wer liefert was (Content, Hardware, Strom, Netzwerk)?"],
-      ["q4","Wartung & Support – wer ist zuständig?"],
-      ["q5","Barrierefreiheit & Sprachen?"],
-      ["q6","Besucherdurchsatz / Warteschlangen?"],
+      ["q1","Budget-Rahmen?","open"],
+      ["q2","Deadline / Wunschtermin?","open"],
+      ["q3","Wer liefert was (Content, Hardware, Strom, Netzwerk)?","open"],
+      ["q4","Wartung & Support – wer ist zuständig?","open"],
+      ["q5","Barrierefreiheit & Sprachen?","open"],
+      ["q6","Besucherdurchsatz / Warteschlangen?","open"],
     ]},
   { id:"abschluss", name:"Mitnehmen & Abschluss", sub:"Vor dem Gehen", icon:"📝",
     items:[
-      ["a1","Ansprechpartner + Kontakt notiert"],
-      ["a2","Nächste Schritte + wer bis wann"],
+      ["a1","Ansprechpartner + Kontakt notiert","open"],
+      ["a2","Nächste Schritte + wer bis wann","open"],
       ["a3","Fotos der Standorte gemacht"],
     ]},
 ];
 
 const KEY = "minimundus-checklist-v1";
 const API = "/api/state";
-let state = { checks:{}, notes:{}, theme:"light", open:{}, updatedAt:0 };
+let state = { checks:{}, notes:{}, answers:{}, theme:"light", open:{}, updatedAt:0 };
 
 function readLocal(){
   try{ const v = localStorage.getItem(KEY); if(v) return JSON.parse(v); }catch(e){}
@@ -273,7 +281,7 @@ async function load(){
     const server = await res.json();
     if(server && server.updatedAt){
       if(!state.updatedAt || server.updatedAt > state.updatedAt){
-        state = Object.assign({checks:{},notes:{},theme:state.theme,open:{},updatedAt:0}, server);
+        state = Object.assign({checks:{},notes:{},answers:{},theme:state.theme,open:{},updatedAt:0}, server);
         writeLocal(); applyTheme(); render(); setSync("ok");
       } else if(state.updatedAt > server.updatedAt){
         setSync("busy"); await push();
@@ -323,20 +331,46 @@ function render(){
         <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="body">
-        ${s.items.map(it=>`
-          <div class="item ${state.checks[it[0]]?'done':''}" data-check="${it[0]}">
-            <div class="box"></div>
-            <div class="txt">${it[1]}${(s.home&&it[0]==='s5')?'':''}</div>
-          </div>`).join('')}
+        ${s.items.map(it=>{
+          const [id,text,type] = it;
+          let ans = "";
+          if(type==='yn'){
+            ans = `<div class="answer"><div class="yn" data-yn="${id}">
+              <button data-val="ja">Ja</button><button data-val="nein">Nein</button>
+            </div></div>`;
+          } else if(type==='open'){
+            ans = `<div class="answer"><input class="ans-input" data-ans="${id}" placeholder="Antwort notieren…"></div>`;
+          }
+          return `<div class="qitem">
+            <div class="item ${state.checks[id]?'done':''}" data-check="${id}">
+              <div class="box"></div>
+              <div class="txt">${text}</div>
+            </div>${ans}
+          </div>`;
+        }).join('')}
         <div class="notes">
-          <label>Notizen ${s.name}</label>
-          <textarea data-note="${s.id}" placeholder="Stichworte, Zahlen, Antworten…">${state.notes[s.id]||''}</textarea>
+          <label>Allgemeine Notizen ${s.name}</label>
+          <textarea data-note="${s.id}" placeholder="Stichworte, Beobachtungen, Sonstiges…">${state.notes[s.id]||''}</textarea>
         </div>
       </div>`;
     app.appendChild(card);
   });
   bind();
   updateProgress();
+}
+
+function refreshCount(id){
+  const sec = DATA.find(s=>s.items.some(i=>i[0]===id));
+  const done = sec.items.filter(it=>state.checks[it[0]]).length;
+  const card = document.querySelector(`[data-toggle="${sec.id}"]`).closest('.card');
+  card.querySelector('.count').textContent = `${done}/${sec.items.length}`;
+}
+function setCovered(id, val){
+  if(state.checks[id] === val) return;
+  state.checks[id] = val;
+  const item = document.querySelector(`.item[data-check="${id}"]`);
+  if(item) item.classList.toggle('done', val);
+  refreshCount(id); updateProgress();
 }
 
 function bind(){
@@ -352,14 +386,34 @@ function bind(){
     el.onclick = ()=>{
       const id = el.dataset.check;
       state.checks[id] = !state.checks[id];
-      el.classList.toggle('done');
-      const card = el.closest('.card');
-      const sec = DATA.find(s=>s.items.some(i=>i[0]===id));
-      const done = sec.items.filter(it=>state.checks[it[0]]).length;
-      card.querySelector('.count').textContent = `${done}/${sec.items.length}`;
-      updateProgress(); save();
+      el.classList.toggle('done', state.checks[id]);
+      refreshCount(id); updateProgress(); save();
     };
   });
+  // Ja/Nein-Schalter
+  document.querySelectorAll('[data-yn]').forEach(group=>{
+    const id = group.dataset.yn;
+    group.querySelectorAll('button').forEach(b=>{
+      b.classList.toggle('sel', b.dataset.val === state.answers[id]);
+      b.onclick = ()=>{
+        state.answers[id] = (state.answers[id]===b.dataset.val) ? '' : b.dataset.val;
+        group.querySelectorAll('button').forEach(x=>x.classList.toggle('sel', x.dataset.val===state.answers[id]));
+        if(state.answers[id]) setCovered(id, true);
+        save();
+      };
+    });
+  });
+  // Offene Antwortfelder
+  document.querySelectorAll('[data-ans]').forEach(el=>{
+    el.value = state.answers[el.dataset.ans] || '';
+    el.oninput = ()=>{
+      const id = el.dataset.ans;
+      state.answers[id] = el.value;
+      if(el.value.trim()) setCovered(id, true);
+      save();
+    };
+  });
+  // Allgemeine Notizen
   document.querySelectorAll('[data-note]').forEach(el=>{
     el.oninput = ()=>{ state.notes[el.dataset.note] = el.value; save(); };
   });
@@ -389,14 +443,20 @@ function toast(msg){
 
 /* Zusammenfassung */
 document.getElementById('copy').onclick = async ()=>{
-  let out = "MINIMUNDUS – SCOPING-NOTIZEN\n";
+  let out = "MINIMUNDUS – SCOPING-PROTOKOLL\n";
   out += new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'})+"\n";
   out += "──────────────────────────\n\n";
   DATA.forEach(s=>{
     const done = s.items.filter(it=>state.checks[it[0]]).length;
     out += `${s.icon} ${s.name.toUpperCase()}  (${done}/${s.items.length})\n`;
-    s.items.forEach(it=>{ out += `  [${state.checks[it[0]]?'x':' '}] ${it[1]}\n`; });
-    if((state.notes[s.id]||'').trim()){ out += `  → ${state.notes[s.id].trim()}\n`; }
+    s.items.forEach(it=>{
+      const [id,text,type] = it;
+      out += `  [${state.checks[id]?'x':' '}] ${text}\n`;
+      const a = state.answers[id];
+      if(type==='yn' && a){ out += `      → ${a==='ja'?'Ja':'Nein'}\n`; }
+      else if(type==='open' && a && a.trim()){ out += `      → ${a.trim()}\n`; }
+    });
+    if((state.notes[s.id]||'').trim()){ out += `  Notiz: ${state.notes[s.id].trim()}\n`; }
     out += "\n";
   });
   try{
@@ -410,8 +470,8 @@ document.getElementById('copy').onclick = async ()=>{
 
 /* Reset */
 document.getElementById('reset').onclick = ()=>{
-  if(!confirm("Alle Haken und Notizen zurücksetzen?")) return;
-  state.checks={}; state.notes={};
+  if(!confirm("Alle Haken, Antworten und Notizen zurücksetzen?")) return;
+  state.checks={}; state.notes={}; state.answers={};
   render(); save(); toast("Zurückgesetzt");
 };
 
