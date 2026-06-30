@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Minimundus – Scoping-Checkliste</title>
+<meta name="theme-color" content="#E2622B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Minimundus">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%23E2622B'/%3E%3Crect x='52' y='96' width='44' height='44' rx='8' fill='white'/%3E%3Crect x='104' y='70' width='28' height='28' rx='6' fill='white' opacity='0.7'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' rx='7' fill='%23E2622B'/%3E%3Crect x='9' y='17' width='9' height='9' rx='2' fill='white'/%3E%3Crect x='19' y='12' width='6' height='6' rx='1.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EAEDF1; --surface:#FFFFFF; --surface-2:#F4F6F9;
+    --ink:#161C26; --ink-soft:#5A6472; --line:#D9DEE6;
+    --accent:#E2622B;        /* Minimundus-Tangerine */
+    --go:#16936B;            /* erledigt */
+    --go-soft:#E4F2EC;
+    --shadow:0 1px 2px rgba(22,28,38,.06),0 8px 24px rgba(22,28,38,.06);
+    --r:16px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0E1218; --surface:#161C26; --surface-2:#1D2533;
+    --ink:#EDF1F6; --ink-soft:#9AA6B6; --line:#28313F;
+    --accent:#F5803E; --go:#3CC795; --go-soft:#143027;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;font-weight:450;
+    line-height:1.45;padding-bottom:96px;
+    transition:background .25s,color .25s;
+  }
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:20;background:var(--bg);
+    padding:max(14px,env(safe-area-inset-top)) 18px 12px;
+    border-bottom:1px solid var(--line);
+  }
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .mark{
+    width:34px;height:34px;border-radius:9px;flex:none;
+    background:var(--accent);position:relative;
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.18);
+  }
+  .mark::before,.mark::after{content:"";position:absolute;background:#fff;border-radius:2px}
+  .mark::before{width:14px;height:14px;left:6px;bottom:6px;opacity:.95}
+  .mark::after{width:9px;height:9px;left:18px;bottom:13px;opacity:.6}
+  .titles{min-width:0}
+  .eyebrow{
+    font-family:'Space Grotesk';font-size:11px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);margin:0;
+  }
+  h1{
+    font-family:'Space Grotesk';font-weight:700;font-size:18px;margin:1px 0 0;
+    letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .theme-btn{
+    flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);font-size:17px;cursor:pointer;
+    display:grid;place-items:center;
+  }
+  .sync{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;
+    color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);
+    border-radius:99px;padding:6px 10px;white-space:nowrap;max-width:120px;overflow:hidden}
+  .sync i{width:7px;height:7px;border-radius:99px;background:var(--ink-soft);flex:none}
+  .sync.ok i{background:var(--go)} .sync.ok{color:var(--go)}
+  .sync.busy i{background:var(--accent);animation:pulse 1s infinite} .sync.busy{color:var(--accent)}
+  .sync.off i{background:#C0392B}
+  @keyframes pulse{50%{opacity:.35}}
+  @media (prefers-reduced-motion:reduce){.sync.busy i{animation:none}}
+  .progress-wrap{margin-top:12px}
+  .progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .progress-meta b{font-family:'Space Grotesk';font-size:15px;font-weight:600}
+  .progress-meta span{font-size:12px;color:var(--ink-soft)}
+  .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--accent),var(--go));transition:width .35s ease}
+  /* ---------- Cards ---------- */
+  main{padding:16px 14px 0;max-width:560px;margin:0 auto}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;
+  }
+  .card-head{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;
+    user-select:none;
+  }
+  .idx{
+    font-family:'Space Grotesk';font-weight:700;font-size:13px;flex:none;
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:var(--surface-2);color:var(--ink-soft);
+  }
+  .card-head .label{flex:1;min-width:0}
+  .card-head .name{font-family:'Space Grotesk';font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .card-head .sub{font-size:12px;color:var(--ink-soft);margin-top:1px}
+  .count{font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;flex:none}
+  .chev{flex:none;color:var(--ink-soft);transition:transform .25s;margin-left:2px}
+  .card.open .chev{transform:rotate(90deg)}
+  .body{display:none;padding:2px 16px 14px;border-top:1px solid var(--line)}
+  .card.open .body{display:block}
+  /* ---------- Items ---------- */
+  .item{
+    display:flex;gap:12px;align-items:flex-start;padding:11px 0;
+    border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .item:last-of-type{border-bottom:0}
+  .box{
+    flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+    background:var(--surface);position:relative;transition:.15s;margin-top:1px;
+  }
+  .item.done .box{background:var(--go);border-color:var(--go)}
+  .box::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;
+    border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(0);
+    transition:transform .15s}
+  .item.done .box::after{transform:rotate(45deg) scale(1)}
+  .item .txt{font-size:14.5px;padding-top:1px}
+  .item.done .txt{color:var(--ink-soft);text-decoration:line-through}
+  .home{display:inline-block;font-size:10px;font-weight:600;color:var(--go);
+    background:var(--go-soft);padding:1px 7px;border-radius:99px;margin-left:6px;
+    vertical-align:middle;text-decoration:none}
+  .notes{margin-top:12px}
+  .notes label{display:block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+  textarea{
+    width:100%;min-height:64px;resize:vertical;border:1px solid var(--line);
+    border-radius:10px;background:var(--surface-2);color:var(--ink);
+    font-family:inherit;font-size:14px;padding:10px 12px;line-height:1.45;
+  }
+  textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  /* ---------- Footer action ---------- */
+  .actionbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:25;
+    padding:12px 14px max(12px,env(safe-area-inset-bottom));
+    background:linear-gradient(transparent,var(--bg) 28%);
+  }
+  .actions{max-width:560px;margin:0 auto;display:flex;gap:10px}
+  button.act{
+    flex:1;border:none;border-radius:12px;padding:14px;cursor:pointer;
+    font-family:'Space Grotesk';font-weight:600;font-size:15px;
+  }
+  .primary{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+  .ghost{flex:none;width:54px;background:var(--surface);color:var(--ink-soft);
+    border:1px solid var(--line)!important;font-size:13px}
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(12px);
+    background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;
+    font-size:13.5px;font-weight:500;opacity:0;pointer-events:none;transition:.25s;z-index:40;
+    box-shadow:var(--shadow);white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .foot{text-align:center;color:var(--ink-soft);font-size:11.5px;padding:6px 0 2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="titles">
+        <p class="eyebrow">Scoping · Minimundus</p>
+        <h1>Stationen-Briefing</h1>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex:none">
+      <span class="sync" id="sync"><i></i><span>…</span></span>
+      <button class="theme-btn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <b id="pct">0&thinsp;%</b>
+      <span id="frac">0 / 0 Punkte</span>
+    </div>
+    <div class="bar"><i id="fill"></i></div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="actionbar">
+  <div class="actions">
+    <button class="act primary" id="copy">Zusammenfassung kopieren</button>
+    <button class="act ghost" id="reset">Reset</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = [
+  { id:"trickfilm", name:"Trickfilm-Station", sub:"Kinder erstellen eigenen Film", icon:"🎬",
+    items:[
+      ["t1","Stop-Motion oder gezeichnet?"],
+      ["t2","Ausgabe: QR / E-Mail / Download?"],
+      ["t3","Dauer pro Session → Durchsatz?"],
+      ["t4","Mehrsprachig nötig?"],
+      ["t5","Kindersicher / robust gebaut?"],
+      ["t6","KI-Produktion des Films angedacht?"],
+    ]},
+  { id:"selfie", name:"Selfie-Station", sub:"Unser Heimspiel", icon:"🤳", home:true,
+    items:[
+      ["s1","Druck oder nur digital?"],
+      ["s2","Greenscreen / Minimundus-Szene als Hintergrund?"],
+      ["s3","Datenschutz Kinderfotos (DSGVO) – wie geregelt?"],
+      ["s4","Branding / Rahmen-Design?"],
+      ["s5","Bestehende Lösung von uns wiederverwendbar?"],
+      ["s6","Münzzahlung oder auch per Karte?"],
+    ]},
+  { id:"fussball", name:"Fußballwand", sub:"Speed oder Treffer", icon:"⚽",
+    items:[
+      ["f1","Speed-Messung oder Trefferzonen?"],
+      ["f3","Highscore / Bestenliste gewünscht?"],
+      ["f4","Platzbedarf vor Ort? Sicherheitsabstand / Netz nötig?"],
+      ["f5","Bestehende Lösung erweitern oder neu bauen?"],
+      ["f6","Demontieren und bei uns bauen – wie gedacht?"],
+    ]},
+  { id:"d3", name:"3D-Station", sub:"Blackbox – nur dokumentieren", icon:"📐",
+    items:[
+      ["d1","Fotos vom Ist-Zustand machen"],
+      ["d2","Videocall mit Chef"],
+    ]},
+  { id:"quer", name:"Über alle Stationen", sub:"PM-Standard", icon:"🔧",
+    items:[
+      ["q1","Budget-Rahmen?"],
+      ["q2","Deadline / Wunschtermin?"],
+      ["q3","Wer liefert was (Content, Hardware, Strom, Netzwerk)?"],
+      ["q4","Wartung & Support – wer ist zuständig?"],
+      ["q5","Barrierefreiheit & Sprachen?"],
+      ["q6","Besucherdurchsatz / Warteschlangen?"],
+    ]},
+  { id:"abschluss", name:"Mitnehmen & Abschluss", sub:"Vor dem Gehen", icon:"📝",
+    items:[
+      ["a1","Ansprechpartner + Kontakt notiert"],
+      ["a2","Nächste Schritte + wer bis wann"],
+      ["a3","Fotos der Standorte gemacht"],
+    ]},
+];
+
+const KEY = "minimundus-checklist-v1";
+const API = "/api/state";
+let state = { checks:{}, notes:{}, theme:"light", open:{}, updatedAt:0 };
+
+function readLocal(){
+  try{ const v = localStorage.getItem(KEY); if(v) return JSON.parse(v); }catch(e){}
+  return null;
+}
+function writeLocal(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+}
+
+function setSync(mode){
+  const el = document.getElementById('sync'); if(!el) return;
+  const map = { busy:["busy","Sync…"], ok:["ok","Gespeichert"], off:["off","Offline · lokal"] };
+  const [cls,txt] = map[mode] || map.busy;
+  el.className = "sync " + cls;
+  el.querySelector('span').textContent = txt;
+}
+
+// Mit Netlify Blobs abgleichen (Last-Write-Wins über updatedAt)
+async function load(){
+  try{
+    const res = await fetch(API);
+    if(!res.ok){ setSync("off"); return; }
+    const server = await res.json();
+    if(server && server.updatedAt){
+      if(!state.updatedAt || server.updatedAt > state.updatedAt){
+        state = Object.assign({checks:{},notes:{},theme:state.theme,open:{},updatedAt:0}, server);
+        writeLocal(); applyTheme(); render(); setSync("ok");
+      } else if(state.updatedAt > server.updatedAt){
+        setSync("busy"); await push();
+      } else { setSync("ok"); }
+    } else {
+      if(state.updatedAt){ setSync("busy"); await push(); } else { setSync("ok"); }
+    }
+  }catch(e){ setSync("off"); }
+}
+
+let saveT;
+function save(){
+  state.updatedAt = Date.now();
+  writeLocal();
+  setSync("busy");
+  clearTimeout(saveT);
+  saveT = setTimeout(push, 500);
+}
+async function push(){
+  try{
+    const res = await fetch(API, {
+      method:"PUT", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(state)
+    });
+    setSync(res.ok ? "ok" : "off");
+  }catch(e){ setSync("off"); }
+}
+
+const app = document.getElementById('app');
+const allItems = DATA.flatMap(s=>s.items.map(i=>i[0]));
+
+function render(){
+  app.innerHTML = "";
+  DATA.forEach((s,i)=>{
+    const done = s.items.filter(it=>state.checks[it[0]]).length;
+    const isOpen = state.open[s.id] !== false; // default offen
+    const card = document.createElement('section');
+    card.className = "card" + (isOpen?" open":"");
+    card.innerHTML = `
+      <div class="card-head" data-toggle="${s.id}">
+        <div class="idx">${String(i+1).padStart(2,'0')}</div>
+        <div class="label">
+          <div class="name">${s.icon} ${s.name}</div>
+          <div class="sub">${s.sub}</div>
+        </div>
+        <div class="count">${done}/${s.items.length}</div>
+        <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="body">
+        ${s.items.map(it=>`
+          <div class="item ${state.checks[it[0]]?'done':''}" data-check="${it[0]}">
+            <div class="box"></div>
+            <div class="txt">${it[1]}${(s.home&&it[0]==='s5')?'':''}</div>
+          </div>`).join('')}
+        <div class="notes">
+          <label>Notizen ${s.name}</label>
+          <textarea data-note="${s.id}" placeholder="Stichworte, Zahlen, Antworten…">${state.notes[s.id]||''}</textarea>
+        </div>
+      </div>`;
+    app.appendChild(card);
+  });
+  bind();
+  updateProgress();
+}
+
+function bind(){
+  document.querySelectorAll('[data-toggle]').forEach(el=>{
+    el.onclick = ()=>{
+      const id = el.dataset.toggle;
+      state.open[id] = !(state.open[id]!==false);
+      el.closest('.card').classList.toggle('open');
+      save();
+    };
+  });
+  document.querySelectorAll('[data-check]').forEach(el=>{
+    el.onclick = ()=>{
+      const id = el.dataset.check;
+      state.checks[id] = !state.checks[id];
+      el.classList.toggle('done');
+      const card = el.closest('.card');
+      const sec = DATA.find(s=>s.items.some(i=>i[0]===id));
+      const done = sec.items.filter(it=>state.checks[it[0]]).length;
+      card.querySelector('.count').textContent = `${done}/${sec.items.length}`;
+      updateProgress(); save();
+    };
+  });
+  document.querySelectorAll('[data-note]').forEach(el=>{
+    el.oninput = ()=>{ state.notes[el.dataset.note] = el.value; save(); };
+  });
+}
+
+function updateProgress(){
+  const total = allItems.length;
+  const done = allItems.filter(id=>state.checks[id]).length;
+  const pct = total? Math.round(done/total*100):0;
+  document.getElementById('fill').style.width = pct+"%";
+  document.getElementById('pct').innerHTML = pct+"&thinsp;%";
+  document.getElementById('frac').textContent = `${done} / ${total} Punkte`;
+}
+
+/* Theme */
+const themeBtn = document.getElementById('theme');
+function applyTheme(){ document.documentElement.dataset.theme = state.theme; }
+themeBtn.onclick = ()=>{ state.theme = state.theme==='dark'?'light':'dark'; applyTheme(); save(); };
+
+/* Toast */
+let toastT;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'),1900);
+}
+
+/* Zusammenfassung */
+document.getElementById('copy').onclick = async ()=>{
+  let out = "MINIMUNDUS – SCOPING-NOTIZEN\n";
+  out += new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'})+"\n";
+  out += "──────────────────────────\n\n";
+  DATA.forEach(s=>{
+    const done = s.items.filter(it=>state.checks[it[0]]).length;
+    out += `${s.icon} ${s.name.toUpperCase()}  (${done}/${s.items.length})\n`;
+    s.items.forEach(it=>{ out += `  [${state.checks[it[0]]?'x':' '}] ${it[1]}\n`; });
+    if((state.notes[s.id]||'').trim()){ out += `  → ${state.notes[s.id].trim()}\n`; }
+    out += "\n";
+  });
+  try{
+    await navigator.clipboard.writeText(out);
+    toast("In Zwischenablage kopiert ✓");
+  }catch(e){
+    const ta=document.createElement('textarea');ta.value=out;document.body.appendChild(ta);
+    ta.select();document.execCommand('copy');ta.remove();toast("Kopiert ✓");
+  }
+};
+
+/* Reset */
+document.getElementById('reset').onclick = ()=>{
+  if(!confirm("Alle Haken und Notizen zurücksetzen?")) return;
+  state.checks={}; state.notes={};
+  render(); save(); toast("Zurückgesetzt");
+};
+
+(async function(){
+  const local = readLocal();
+  if(local) Object.assign(state, local);
+  applyTheme();
+  render();
+  setSync("busy");
+  await load();
+})();
+</script>
+</body>
+</html>
